@@ -851,112 +851,113 @@ function autoParty() {
 }
 
 function autozig() {
-    if (gamePage.religionTab.visible) {
-        if (gamePage.bld.getBuildingExt('ziggurat').meta.on > 0 && !gamePage.religionTab.sacrificeBtn) {
-            gamePage.tabs[5].render();
-        }
-        gamePage.religionTab.update();
+
+    if (!gamePage.religionTab.visible) {
+        return;
+    }
+    if (gamePage.bld.getBuildingExt('ziggurat').meta.on > 0 && !gamePage.religionTab.sacrificeBtn) {
+        gamePage.tabs[5].render();
+    }
+    gamePage.religionTab.update();
 
 
-        if (gamePage.religionTab.sacrificeBtn && gamePage.resPool.get('unicorns').value > gamePage.resPool.get('tears').value) {
-            var btn = gamePage.tabs[0].buttons.filter(res => res.model.metadata && res.model.metadata.unlocked && res.model.metadata.name == 'unicornPasture');
+    if (gamePage.religionTab.sacrificeBtn && gamePage.resPool.get('unicorns').value > gamePage.resPool.get('tears').value) {
+        var btn = gamePage.tabs[0].buttons.filter(res => res.model.metadata && res.model.metadata.unlocked && res.model.metadata.name == 'unicornPasture');
 
-            if (btn.length > 0 && ((btn[0].model.prices[0].val - gamePage.resPool.get('unicorns').value) / (gamePage.getResourcePerTick('unicorns', true) * gamePage.getRateUI())) / 60 > 2) {
-                if (gamePage.religionTab.sacrificeBtn.model.allLink.visible) {
-                    gamePage.religionTab.sacrificeBtn.controller.transform(gamePage.religionTab.sacrificeBtn.model, 1, {}, function (result) {
-                        if (result) {
-                        }
-                    })
-                }
-            }
-        }
-
-        if (gamePage.resPool.get('alicorn').value > 25 && (switches['CollectResBReset'] || gamePage.resPool.get('alicorn').value > gamePage.resPool.get("timeCrystal").value || (gamePage.time.meta[0].meta[5].unlocked && gamePage.resPool.get("timeCrystal").value > gamePage.timeTab.cfPanel.children[0].children[6].model.prices[0].val * (gamePage.timeTab.cfPanel.children[0].children[6].model.metadata.val > 2 ? 0.1 : 0.05)))) {
-            if (gamePage.religionTab.sacrificeAlicornsBtn.model.allLink.visible) {
-                gamePage.religionTab.sacrificeAlicornsBtn.controller.transform(gamePage.religionTab.sacrificeAlicornsBtn.model, 1, {}, function (result) {
+        if (btn.length > 0 && ((btn[0].model.prices[0].val - gamePage.resPool.get('unicorns').value) / (gamePage.getResourcePerTick('unicorns', true) * gamePage.getRateUI())) / 60 > 2) {
+            if (gamePage.religionTab.sacrificeBtn.model.allLink.visible) {
+                gamePage.religionTab.sacrificeBtn.controller.transform(gamePage.religionTab.sacrificeBtn.model, 1, {}, function (result) {
                     if (result) {
                     }
                 })
             }
         }
-        if (gamePage.resPool.get('relic').value < 5 && gamePage.resPool.get('timeCrystal').value > 50 && !gamePage.workshop.get("chronoforge").researched) {
-            if (gamePage.religionTab.refineTCBtn && gamePage.religionTab.refineTCBtn.model.visible) {
-                gamePage.religionTab.refineTCBtn.controller.buyItem(gamePage.religionTab.refineTCBtn.model, {}, function (result) {
-                    if (result) {
-                        gamePage.religionTab.refineTCBtn.update();
-                    }
-                });
-            }
+    }
 
+    if (gamePage.resPool.get('alicorn').value > 25 && (switches['CollectResBReset'] || gamePage.resPool.get('alicorn').value > gamePage.resPool.get("timeCrystal").value || (gamePage.time.meta[0].meta[5].unlocked && gamePage.resPool.get("timeCrystal").value > gamePage.timeTab.cfPanel.children[0].children[6].model.prices[0].val * (gamePage.timeTab.cfPanel.children[0].children[6].model.metadata.val > 2 ? 0.1 : 0.05)))) {
+        if (gamePage.religionTab.sacrificeAlicornsBtn.model.allLink.visible) {
+            gamePage.religionTab.sacrificeAlicornsBtn.controller.transform(gamePage.religionTab.sacrificeAlicornsBtn.model, 1, {}, function (result) {
+                if (result) {
+                }
+            })
         }
-
-
-        if (gamePage.religionTab.zgUpgradeButtons.filter(res => res.model.metadata.unlocked).length > 0) {
-            zig = gamePage.religionTab.zgUpgradeButtons.filter(res => res.model.visible).sort(function (a, b) {
-                a1 = a.model.metadata.effects.alicornPerTick;
-                a2 = a.model.metadata.effects.unicornsRatioReligion
-                b1 = b.model.metadata.effects.alicornPerTick;
-                b2 = b.model.metadata.effects.unicornsRatioReligion
-                if (!a1) {
-                    a1 = 0
+    }
+    if (gamePage.resPool.get('relic').value < 5 && gamePage.resPool.get('timeCrystal').value > 50 && !gamePage.workshop.get("chronoforge").researched) {
+        if (gamePage.religionTab.refineTCBtn && gamePage.religionTab.refineTCBtn.model.visible) {
+            gamePage.religionTab.refineTCBtn.controller.buyItem(gamePage.religionTab.refineTCBtn.model, {}, function (result) {
+                if (result) {
+                    gamePage.religionTab.refineTCBtn.update();
                 }
-                ;
-                if (!a2) {
-                    a2 = 0
-                }
-                ;
-                if (!b1) {
-                    b1 = 0
-                }
-                ;
-                if (!b2) {
-                    b2 = 0
-                }
-                ;
-
-                return ((a1 + a2) - (b1 + b2));
             });
-
-            var btn = zig;
-
-            for (var zg = 0; zg < btn.length; zg++) {
-                btn[zg].controller.updateEnabled(btn[zg].model);
-            }
-
-            if (btn.length < 2 || (btn.slice(btn.length - 2, btn.length).filter(res => res.model.enabled).length > 0) || (gamePage.religionTab.zgUpgradeButtons[0].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1) || (gamePage.religionTab.zgUpgradeButtons[6].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1 && gamePage.religionTab.zgUpgradeButtons[6].model.prices[2].val < gamePage.resPool.get('unobtainium').value)) {
-                for (var zg = btn.length - 1; zg >= 0; zg--) {
-                    if (btn[zg] && btn[zg].model.metadata.unlocked) {
-                        try {
-                            btn[zg].controller.buyItem(btn[zg].model, {}, function (result) {
-                                if (result) {
-                                    btn[zg].update();
-                                    gamePage.msg('Build in Ziggurats: ' + btn[zg].model.name);
-                                    if (zg == btn.length - 1 && btn[btn.length - 1].model.enabled) {
-                                        zg++
-                                    }
-                                }
-                            });
-                        } catch (err) {
-                            console.log(err);
-                        }
-                    }
-                }
-            }
         }
 
-        if (gamePage.resPool.get('sorrow').value < gamePage.resPool.get('sorrow').maxValue && gamePage.resPool.get('sorrow').value * 10000 < gamePage.resPool.get('tears').value) {
-            var btn = [gamePage.religionTab.refineBtn]
-            for (var zg = 0; zg < btn.length; zg++) {
-                if (btn[zg] && btn[zg].model.visible == true) {
+    }
+
+    if (gamePage.religionTab.zgUpgradeButtons.filter(res => res.model.metadata.unlocked).length > 0) {
+        zig = gamePage.religionTab.zgUpgradeButtons.filter(res => res.model.visible).sort(function (a, b) {
+            a1 = a.model.metadata.effects.alicornPerTick;
+            a2 = a.model.metadata.effects.unicornsRatioReligion
+            b1 = b.model.metadata.effects.alicornPerTick;
+            b2 = b.model.metadata.effects.unicornsRatioReligion
+            if (!a1) {
+                a1 = 0
+            }
+
+            if (!a2) {
+                a2 = 0
+            }
+
+            if (!b1) {
+                b1 = 0
+            }
+
+            if (!b2) {
+                b2 = 0
+            }
+
+
+            return ((a1 + a2) - (b1 + b2));
+        });
+
+        var btn = zig;
+
+        for (var zg = 0; zg < btn.length; zg++) {
+            btn[zg].controller.updateEnabled(btn[zg].model);
+        }
+
+        if (btn.length < 2 || (btn.slice(btn.length - 2, btn.length).filter(res => res.model.enabled).length > 0) || (gamePage.religionTab.zgUpgradeButtons[0].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1) || (gamePage.religionTab.zgUpgradeButtons[6].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1 && gamePage.religionTab.zgUpgradeButtons[6].model.prices[2].val < gamePage.resPool.get('unobtainium').value)) {
+            for (var zg = btn.length - 1; zg >= 0; zg--) {
+                if (btn[zg] && btn[zg].model.metadata.unlocked) {
                     try {
                         btn[zg].controller.buyItem(btn[zg].model, {}, function (result) {
                             if (result) {
-                                gamePage.msg('Refine tears: BLS(' + Math.trunc(gamePage.resPool.get('sorrow').value) + ')');
+                                btn[zg].update();
+                                gamePage.msg('Build in Ziggurats: ' + btn[zg].model.name);
+                                if (zg === btn.length - 1 && btn[btn.length - 1].model.enabled) {
+                                    zg++
+                                }
                             }
                         });
                     } catch (err) {
                         console.log(err);
                     }
+                }
+            }
+        }
+    }
+
+    if (gamePage.resPool.get('sorrow').value < gamePage.resPool.get('sorrow').maxValue && gamePage.resPool.get('sorrow').value * 10000 < gamePage.resPool.get('tears').value) {
+        var btn = [gamePage.religionTab.refineBtn]
+        for (var zg = 0; zg < btn.length; zg++) {
+            if (btn[zg] && btn[zg].model.visible == true) {
+                try {
+                    btn[zg].controller.buyItem(btn[zg].model, {}, function (result) {
+                        if (result) {
+                            gamePage.msg('Refine tears: BLS(' + Math.trunc(gamePage.resPool.get('sorrow').value) + ')');
+                        }
+                    });
+                } catch (err) {
+                    console.log(err);
                 }
             }
         }
