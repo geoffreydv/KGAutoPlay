@@ -925,7 +925,13 @@ function autozig() {
             btn[zg].controller.updateEnabled(btn[zg].model);
         }
 
-        if (btn.length < 2 || (btn.slice(btn.length - 2, btn.length).filter(res => res.model.enabled).length > 0) || (gamePage.religionTab.zgUpgradeButtons[0].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1) || (gamePage.religionTab.zgUpgradeButtons[6].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1 && gamePage.religionTab.zgUpgradeButtons[6].model.prices[2].val < gamePage.resPool.get('unobtainium').value)) {
+        debugger;
+
+        if (btn.length < 2
+            || (btn.slice(btn.length - 2, btn.length).filter(res => res.model.enabled).length > 0)
+            || (gamePage.religionTab.zgUpgradeButtons[0].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1)
+            || (gamePage.religionTab.zgUpgradeButtons[6].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1
+                && gamePage.religionTab.zgUpgradeButtons[6].model.prices[2].val < gamePage.resPool.get('unobtainium').value)) {
             for (var zg = btn.length - 1; zg >= 0; zg--) {
                 if (btn[zg] && btn[zg].model.metadata.unlocked) {
                     try {
