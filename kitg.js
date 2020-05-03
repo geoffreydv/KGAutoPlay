@@ -925,8 +925,6 @@ function autozig() {
             btn[zg].controller.updateEnabled(btn[zg].model);
         }
 
-        debugger;
-
         if (btn.length < 2
             || (btn.slice(btn.length - 2, btn.length).filter(res => res.model.enabled).length > 0)
             || (gamePage.religionTab.zgUpgradeButtons[0].model.prices[1].val < gamePage.resPool.get('tears').value * 0.1)
