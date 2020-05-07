@@ -1152,7 +1152,7 @@ function UpgradeBuildings() {
     var upgradeTarget;
     for (var up = 0; up < mblds.length; up++) {
         upgradeTarget = gamePage.tabs[0].buttons.find(res => res.model.metadata && res.model.metadata.name == mblds[up].name);
-        upgradeTarget.controller.upgradeCallback(upgradeTarget.model, {});
+        upgradeTarget.controller.upgrade(upgradeTarget.model);
     }
 
     if (gamePage.bld.getBuildingExt('steamworks').meta.on < gamePage.bld.getBuildingExt('steamworks').meta.val && gamePage.resPool.get('coal').value > 0 && gamePage.bld.getBuildingExt('steamworks').meta.unlocked) {
