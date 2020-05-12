@@ -1414,34 +1414,31 @@ function SellSpaceAndReset() {
     if (!gamePage.challenges.currentChallenge) {
         msg = "Sell all space and Reset?";
         gamePage.ui.confirm($I("time.reset.title"), msg, function (confirmed) {
-            if (confirmed) {
-                let optsell = gamePage.opts.hideSell
-                gamePage.opts.hideSell = false
-                //sell all space
-                gamePage.tabs[6].planetPanels[4].children[1].model.metadata.on = gamePage.tabs[6].planetPanels[4].children[1].model.metadata.val
-                for (var z = 0; z < gamePage.tabs[6].planetPanels.length; z++) {
-                    var spBuild = gamePage.tabs[6].planetPanels[z].children;
-                    try {
-                        for (var s = 0; s < spBuild.length; s++) {
-                            if (spBuild[s].model.metadata.unlocked && spBuild[s].model.metadata.val > 1 && spBuild[s].model.metadata.name != "containmentChamber") {
-                                spBuild[s].controller.sellInternal(spBuild[s].model, 1);
-                            }
+            let optsell = gamePage.opts.hideSell
+            gamePage.opts.hideSell = false
+            //sell all space
+            gamePage.tabs[6].planetPanels[4].children[1].model.metadata.on = gamePage.tabs[6].planetPanels[4].children[1].model.metadata.val
+            for (var z = 0; z < gamePage.tabs[6].planetPanels.length; z++) {
+                var spBuild = gamePage.tabs[6].planetPanels[z].children;
+                try {
+                    for (var s = 0; s < spBuild.length; s++) {
+                        if (spBuild[s].model.metadata.unlocked && spBuild[s].model.metadata.val > 1 && spBuild[s].model.metadata.name != "containmentChamber") {
+                            spBuild[s].controller.sellInternal(spBuild[s].model, 1);
                         }
-
-                    } catch (err) {
-                        console.log(err);
                     }
+
+                } catch (err) {
+                    console.log(err);
                 }
-
-                gamePage.opts.hideSell = optsell
-                setTimeout(function () {
-                    gamePage.resetAutomatic();
-                }, 10000);
-                console.log("reset will be in 10 sec")
-                $("#PriorityLabel")[0].innerText = "reset will be in 10 sec"
-                clearInterval(runAllAutomation);
-
             }
+
+            gamePage.opts.hideSell = optsell
+            setTimeout(function () {
+                gamePage.resetAutomatic();
+            }, 10000);
+            console.log("reset will be in 10 sec")
+            $("#PriorityLabel")[0].innerText = "reset will be in 10 sec"
+            clearInterval(runAllAutomation);
         });
     } else {
         gamePage.msg('You are in challenge now, please reset manually.');
