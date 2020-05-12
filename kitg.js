@@ -1413,7 +1413,7 @@ if (gamePage.ironWill) {
 function SellSpaceAndReset() {
     if (!gamePage.challenges.currentChallenge) {
         msg = "Sell all space and Reset?";
-        gamePage.ui.confirm($I("reset.prompt.title"), msg, function (confirmed) {
+        gamePage.ui.confirm($I("time.reset.title"), msg, function (confirmed) {
             if (confirmed) {
                 let optsell = gamePage.opts.hideSell
                 gamePage.opts.hideSell = false
